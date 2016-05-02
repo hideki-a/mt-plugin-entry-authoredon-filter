@@ -1,0 +1,22 @@
+name: MTEntriesAuthoredOnFilter
+id  : MTEntriesAuthoredOnFilter
+key:  mtentriesauthoredonfilter
+version: 1.0.0
+tags:
+    filters:
+        Entries:
+            authored_on_filter:
+                handler: >
+                    sub {
+                        my ( $ctx, $args, $cond ) = @_;
+                        my $terms = $ctx->{ terms };
+                        my $authored_on_filter = $args->{ authored_on_filter };
+                        if ( $authored_on_filter ) {
+                            $terms->{ authored_on } = { op => '>=',
+                                                        value => $authored_on_filter
+                                                      };
+                            $terms->{ id } = { op => '>',
+                                               value => 0,
+                                             };
+                        }
+                    }
