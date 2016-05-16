@@ -11,10 +11,22 @@ tags:
                         my ( $ctx, $args, $cond ) = @_;
                         my $terms = $ctx->{ terms };
                         my $filter_date;
+                        my $op_arg;
                         my $op;
                         if (ref($args->{ authored_on_filter }) eq 'ARRAY') {
                             $filter_date = $args->{ authored_on_filter }->[0];
-                            $op = $args->{ authored_on_filter }->[1] || '>=';
+                            $op_arg = $args->{ authored_on_filter }->[1] || '>=';
+                            if ($op_arg eq 'eq') {
+                                $op = '=';
+                            } elsif ($op_arg eq 'lt') {
+                                $op = '<';
+                            } elsif ($op_arg eq 'le') {
+                                $op = '<=';
+                            } elsif ($op_arg eq 'gt') {
+                                $op = '>';
+                            } else {
+                                $op = '>=';
+                            }
                         } else {
                             $op = '>=';
                             $filter_date = $args->{ authored_on_filter };
